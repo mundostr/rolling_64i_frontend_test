@@ -1,0 +1,15 @@
+.new-task {
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+    padding: 1em;
+    background-color: #666666;
+    border-radius: 0.5em;
+    min-width: 360px;
+}
+
+.frm-field {
+    border: 0;
+    width: 100%;
+    padding: 0.5em;
+}

@@ -7,13 +7,13 @@ import { MdError } from 'react-icons/md'
 
 import './ToastMsg.css'
 
-const ToastMsg = ({ msg }) => {
+const ToastMsg = ({ msg, position }) => {
     const [showMsg, setshowMsg] = useState(true)
 
     const toggleShowMsg = () => setshowMsg(!setshowMsg)
 
     return (
-        <ToastContainer position="bottom-center">
+        <ToastContainer position={position}>
             <Toast onClose={toggleShowMsg} show={showMsg && msg !== ''} animation={false}>
                 <Toast.Header>
                     {/* <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" /> */}
@@ -26,11 +26,12 @@ const ToastMsg = ({ msg }) => {
                 </Toast.Body>
             </Toast>
         </ToastContainer>
-    );
+    )
 }
 
 ToastMsg.propTypes = {
-    msg: PropTypes.string
+    msg: PropTypes.string,
+    position: PropTypes.string
 }
 
 export default ToastMsg

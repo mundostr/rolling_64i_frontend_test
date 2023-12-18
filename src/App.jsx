@@ -8,6 +8,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import { FaCheck } from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md'
 
+import NewTask from './NewTask'
 import ToastMsg from './ToastMsg'
 
 import './App.css'
@@ -16,17 +17,16 @@ function App() {
   const [data, setData] = useState([])
   const [range, setRange] = useState('day')
   const [errorMsg, setErrorMsg] = useState('')
+  const [showNewTaskWindow, setshowNewTaskWindow] = useState(false)
 
-  const changeRange = (range) => {
-    setRange(range)
-  }
+  const changeRange = range => setRange(range)
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(`http://localhost:5050/api/tasks/range/${range}`)
         const jsonData = await response.json()
-        setData(jsonData.data.length > 0 ? jsonData.data[0].items: [])
+        setData(jsonData.data.length > 0 ? jsonData.data: [])
         setErrorMsg('')
       } catch (err) {
         // console.error(err)
@@ -39,19 +39,21 @@ function App() {
 
   return (
     <>
-      <Container className="p-3">
-        <h1 className="header">ROLLING - Tareas ({data.length})</h1>
+      <Container fluid className="p-3">
+        {data && <h1 className="header">ROLLING - Tareas ({data.length})</h1>}
         
         <ButtonGroup aria-label="Rango">
           <Button variant="secondary" onClick={() => changeRange('day')}>Día</Button>
           <Button variant="secondary" onClick={() => changeRange('week')}>Semana</Button>
           <Button variant="secondary" onClick={() => changeRange('month')}>Mes</Button>
         </ButtonGroup>
+
+        &nbsp;<Button variant="success" onClick={() => { setshowNewTaskWindow(true) }}>Nueva tarea</Button>
         
         <ListGroup as="ol" numbered style={{ marginTop: '16px' }}>
-          {data.length === 0 && <p>No hay tareas</p>}
+          {data && data.length === 0 && <p>No hay tareas</p>}
 
-          {data.length > 0 && data.map(item => {
+          {data && data.length > 0 && data.map(item => {
             let statusColor = ''
             
             if (item.status === 'pending') {
@@ -86,7 +88,9 @@ function App() {
           })}
         </ListGroup>
 
-        <ToastMsg msg={errorMsg} />
+        {showNewTaskWindow && <NewTask hideFn={setshowNewTaskWindow} err={errorMsg} />}
+
+        <ToastMsg msg={errorMsg} position="bottom-end" />
       </Container>
     </>
   )
