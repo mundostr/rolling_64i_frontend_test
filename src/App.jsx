@@ -11,6 +11,8 @@ import { MdDelete } from 'react-icons/md'
 import NewTask from './NewTask'
 import ToastMsg from './ToastMsg'
 
+import config from './config'
+
 import './App.css'
 
 function App() {
@@ -24,7 +26,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5050/api/tasks/range/${range}`)
+        const response = await fetch(`${config.BACKEND_BASE_URL}/range/${range}`)
         const jsonData = await response.json()
         setData(jsonData.data.length > 0 ? jsonData.data: [])
         setErrorMsg('')
